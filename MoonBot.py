@@ -1,6 +1,11 @@
+#!/usr/bin/env python
+# -- coding: UTF-8 --
+print("Content-Type: text/plain;charset=utf-8")
+print("")
 import discord, datetime, asyncio, random, os, sys
 from discord.ext import tasks, commands
 from discord.ext.commands import Bot
+
 dirname, filename = os.path.split(os.path.abspath(__file__))
 token = open(dirname+"\\Token.txt", "r").read()
 client = discord.Client()
