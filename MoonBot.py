@@ -187,7 +187,7 @@ async def on_message(message):
         await message.channel.send(random.choice(l_bullshit))
 
 def contains(list_of_words, message_content):
-    person_is_mentioned: bool = False
+    person_is_mentioned = False
     for word in list_of_words:
         if word in message_content:
             person_is_mentioned = True
@@ -195,15 +195,15 @@ def contains(list_of_words, message_content):
 
 
 def check_for_words(list_of_words, message_content):
-    number_of_words: int = len(list_of_words)
-    number_of_matching_words: int = 0
+    number_of_words = len(list_of_words)
+    number_of_matching_words = 0
     l_message_content = message_content.split()
     message = ""
     for word in l_message_content:
         word = str(word).lower()
         message += (" " + word)
     print('message is: ' + message)
-    all_words_in_message: bool = False
+    all_words_in_message = False
     for word in list_of_words:
         word = str(word).lower()
         if message.find(word) == -1:
