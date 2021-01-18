@@ -8,6 +8,8 @@ from discord.ext.commands import Bot
 
 dirname, filename = os.path.split(os.path.abspath(__file__))
 token = open(dirname+"\\Token.txt", "r").read()
+output = open(dirname+"\\output.txt", "w")
+output.write("Python code start")
 client = discord.Client()
 
 bot = Bot(command_prefix='!')
@@ -233,7 +235,7 @@ def calculate_Days():
     dailymessage = str("Day " + day_of_year_str + " of 365, " + remaining_days_str + " days remain")
     return dailymessage
 
-
+output.write("Python code end")
 client.run(token)
 bot.run(token)
 #client.close()
