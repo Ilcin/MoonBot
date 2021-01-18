@@ -1,7 +1,8 @@
-import discord, datetime, asyncio, random
+import discord, datetime, asyncio, random, os, sys
 from discord.ext import tasks, commands
 from discord.ext.commands import Bot
-token = open("token.txt", "r")
+dirname, filename = os.path.split(os.path.abspath(__file__))
+token = open(dirname+"\\Token.txt", "r").read()
 client = discord.Client()
 
 bot = Bot(command_prefix='!')
@@ -122,6 +123,7 @@ l_greet_Me = [
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
+    print(token)
     send_CountDownMessage.start()
 
 @client.event
