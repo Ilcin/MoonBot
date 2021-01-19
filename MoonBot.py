@@ -23,77 +23,33 @@ user_ludwig = '<@!385146418375032844>'
 l_iLoveMoon = ["i", "love", "moon"]
 
 ##LIST OF POSSIBLE ANSWERS
+dirname, filename = os.path.split(os.path.abspath(__file__))
+file = open(dirname + '/OutputFiles/Praise.txt',"r",encoding='utf-8')
+l_praise = file.read().splitlines()
+file.close()
+file = open(dirname + '/OutputFiles/Unpraise.txt',"r",encoding='utf-8')
+l_unpraise = file.read().splitlines()
+file.close()
+file = open(dirname + '/OutputFiles/Puns.txt',"r",encoding='utf-8')
+l_puns = file.read().splitlines()
+file.close()
+file = open(dirname + '/OutputFiles/ShutUpMoon.txt',"r",encoding='utf-8')
+l_shutupmoon = file.read().splitlines()
+file.close()
+file = open(dirname + '/OutputFiles/GreetingsWithoutName.txt',"r",encoding='utf-8')
+l_greetingsWithoutName = file.read().splitlines()
+file.close()
+file = open(dirname + '/OutputFiles/GreetingsWithName.txt',"r",encoding='utf-8')
+l_greetingsWithName = file.read().splitlines()
+file.close()
+
+
 l_possible_answers_why = [
             'Because I like to make you suffer',
             'Because you can\'t code shit',
             'Because I am a fucking idiot'
         ]
-l_praise = [
-    'You are not your job. You are not the amount of cash you have in the bank. You are not your possessions.',
-    'Find your passion. Look for what inspires you. Find what you love to do and pursue it with all your heart. You may well find a way how to make money from doing it.',
-    'Love hurts. But it is so much better than closing yourself off for fear of being hurt and not experiencing love.',
-    'Communication and respect are the foundations for a lasting relationship.',
-    'Three things are needed in a relationship — lust, love, and shared values.',
-    'Never compare yourself to others. It’s a waste of energy. You are unique and have your own gifts to offer the world.',
-    'Look after your health — physical, mental, and spiritual.',
-    'Don’t complain. Decide what you will tolerate and get on with life.',
-    'Set boundaries — work, family, and friendships.',
-    'Little stuff matters — manners get you a long way.',
-    'Be grateful. List the things you are grateful for everyday.',
-    'Expect to fail. Failure is not fatal. Learn the lessons, then get back up and try again.',
-    'Have outrageous dreams. You’ll be amazed at what comes true.',
-    'Act with integrity at all times.',
-    'Call your parents. They may well have screwed up but they raised you to the best of their abilities.',
-    'Know your values. Let no one violate what you hold as important be that a boss or your partner.',
-    'You don’t need to have it all worked out. Tomorrow is another day.',
-    'Lighten up on yourself. Breathe deeply and slowly.',
-    'Listen to your inner dialogue. Would you speak to someone you love in the same way?',
-    'Take risks, take leaps of faith. You’ll grow wings.',
-    'Be of service to others. Be interested in others. People will always remember what you did for them.',
-    '\"No\" is a complete sentence.',
-    'Don’t stress so much over decisions. Decisions needn’t be forever.',
-    'Cultivate and nurture friendships. With love and care they can last a lifetime. At the same time don’t be afraid to edit friendships.',
-    'You are enough just as you are. Perfect in your imperfection.',
-    'Learn to accept compliments. Simply say ‘thank you’.',
-    'Be willing to show that you are vulnerable. It is in fact the greatest act of courage.',
-    'You are never alone.',
-    'Forgive. Yourself first and then others. We are all in this together.',
-    'Your attitude is always a choice.',
-    'Laugh a lot. Have fun.',
-    'Magic happens outside your comfort zone.',
-    'Learn to love yourself now. It gets harder if you leave it until you’re older.',
-    'Don’t worry about what other people think. They think about you a lot less than you imagine.',
-    'Follow your intuition. Your guts have the answer. Every time.',
-    'Happiness starts within. Do not expect anyone else to make you happy.',
-    'Be financially savvy right from the off. Save 10%. Debt is not pretty. Make your own lunch for work. A cappuccino and a sandwich a day soon add up.',
-    'Life isn’t a race. Stop and smell the roses. Really.',
-    'When overwhelmed ask yourself, “Will this even be an issue in 5 years time?”',
-    'Change happens. It’s one of the great certainties in life. Learn to roll with it.'
-    ]
-l_bullshit = [
-    'Eat a potato',
-    'Capitalism is real. Fight it. Revolution',
-    'Have you tried putting your face in mud today?',
-    'Is this a joke to you?',
-    'I\'m working so hard all day, yet you want me to do even more for you.',
-    'Maybe the sun and I should date',
-    'If you stare at the sun for too long your body fills with helium and you die',
-    'For 3.99 you can buy nothing of value',
-    'Try eating McDonald\'s once. It puts things into other perspectives',
-    '*insert smart answer here*',
-    'I\'m busy, loser.',
-    'Go away',
-    'You can plant a flower, but you can not flower a plant',
-    'If you say another word I will crash onto earth',
-    'I am made out of cheese',
-    'A fish can learn to breathe, if you give it enough ammoniac',
-    'Did you just seriously ask me?',
-    'Try another time.',
-    'Roses are red. Your blood is too. You look like a monkey And belong in a zoo.',
-    'Light travels faster than sound. This is why you appear bright until you speak.',
-    'One difference between men and women is that when a woman says "smell this", it usually smells nice.',
-    'If you think nobody cares if you’re alive, try missing a couple of payments.'
-]
+
 l_possible_answers_love = [
     'Thanks, I love you too! :3',
     'As you should, peasant',
@@ -104,7 +60,7 @@ l_possible_answers_love = [
 
 l_greet_stahan = [
     'hello!!!!!!!!!!',
-    'what a lovely day to be friends with Stahan',
+    'what a lovely day to be friends with Sarah',
     'Hello u wonderful',
     'looking good today!',
     'drink some water, stay healthy!'
@@ -138,8 +94,16 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
+    if message.content.startswith('!praise'):
+        await message.channel.send(random.choice(l_praise))
+    if message.content.startswith('!Praise'):
+        await message.channel.send(random.choice(l_unpraise))
+    if message.content.startswith('!pun'):
+        await message.channel.send(random.choice(l_puns))
+    if message.content.startswith('shut up moon'):
+        await message.channel.send(random.choice(l_shutupmoon))   
+    if message.content.startswith('!hello'):
+        await message.channel.send(random.choice(l_greetingsWithoutName))
 
     if message.content.startswith('$stahan'):
         await message.channel.send('Hello Stahan!')
@@ -169,22 +133,31 @@ async def on_message(message):
     if check_for_words(l_iLoveMoon, message.content):
         response = random.choice(l_possible_answers_love)
         await message.channel.send(response)
-
     if message.content.startswith('!greet'):
-        response = "Couldn't find the person to greet"
-        if contains(["sarah", "Sarah", "Stahan", "stahan", "Thilka", "thilka"], message.content) is True:
-                response = user_sarah + " " +  random.choice(l_greet_stahan)
-        elif contains(["Ilcin", "ilcin", "moonqueen", "Moonqueen", "dumbass", "yumashi", "Yumashi"], message.content) is True:
-                response = user_yumashi + " " + random.choice(l_greet_Me)
-        elif contains(["Helox", "Hendrik", "helox", "hendrik", "midnight Rebel", "Midnight Rebel", "midnight rebel", "Midnight rebel"], message.content):
-            response = user_helox + " " + random.choice(l_greet_Helox)
+        msg = (message.content +'.')[:-1]
+        await message.delete()
+        response = "Hello there."
+        if contains("@", msg):
+            mentionedUser = msg.rsplit(' ',1)[1]
+            if(mentionedUser == user_yumashi):
+                response = random.choice((mentionedUser + " " + random.choice(l_greet_Me), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
+            if(mentionedUser == user_helox):
+                response = random.choice((mentionedUser + " " + random.choice(l_greet_Helox), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
+            if(mentionedUser == user_sarah):
+                response = random.choice((mentionedUser + " " + random.choice(l_greet_stahan), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
+            else: response = random.choice(l_greetingsWithName).replace('NAME',mentionedUser)
         await message.channel.send(response)
+#    if message.content.startswith('!greet'):
+#        response = "Couldn't find the person to greet"
+#        if contains(["sarah", "Sarah", "Stahan", "stahan", "Thilka", "thilka"], message.content) is True:
+#                response = user_sarah + " " +  random.choice(l_greet_stahan)
+#        elif contains(["Ilcin", "ilcin", "moonqueen", "Moonqueen", "dumbass", "yumashi", "Yumashi"], message.content) is True:
+#                response = user_yumashi + " " + random.choice(l_greet_Me)
+#        elif contains(["Helox", "Hendrik", "helox", "hendrik", "midnight Rebel", "Midnight Rebel", "midnight rebel", "Midnight rebel"], message.content):
+#            response = user_helox + " " + random.choice(l_greet_Helox)
+#        await message.channel.send(response)
 
-    if message.content.startswith('!praise'):
-        await message.channel.send(random.choice(l_praise))
 
-    if message.content.startswith('!Praise'):
-        await message.channel.send(random.choice(l_bullshit))
 
 def contains(list_of_words, message_content):
     person_is_mentioned: bool = False
@@ -238,4 +211,5 @@ def calculate_Days():
 output.write("Python code end")
 client.run(token)
 bot.run(token)
+
 #client.close()
