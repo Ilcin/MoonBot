@@ -18,10 +18,10 @@ user_sarah = '<@!287945892730765312>'
 user_helox = '<@!265881314773827584>'
 user_alwin = '<@!381769629380509697>'
 user_ludwig = '<@!385146418375032844>'
-
+user_chicken = '<@!699592578361983026>'
 ##LISTS OF WORDS TO CHECK FOR IN A MESSAGE
 l_iLoveMoon = ["i", "love", "moon"]
-
+l_randomQuestion = ["moon"]
 ##LIST OF POSSIBLE ANSWERS
 dirname, filename = os.path.split(os.path.abspath(__file__))
 file = open(dirname + '/OutputFiles/Praise.txt',"r",encoding='utf-8')
@@ -42,7 +42,9 @@ file.close()
 file = open(dirname + '/OutputFiles/GreetingsWithName.txt',"r",encoding='utf-8')
 l_greetingsWithName = file.read().splitlines()
 file.close()
-
+file = open(dirname + '/OutputFiles/RandomAnswers.txt',"r",encoding='utf-8')
+l_randomAnswers = file.read().splitlines()
+file.close()
 
 l_possible_answers_why = [
             'Because I like to make you suffer',
@@ -80,6 +82,17 @@ l_greet_Me = [
     'hi I greet u'
 ]
 
+l_greet_Chicken = [
+    'idiot go away.',
+    'good morning u idiot.',
+    'stop looking at your phone and work!',
+    'you are fired!',
+    'stop being a bad influence on rustoff.',
+    'you should see an eye doctor.',
+    '... who is that? Never seen him before.',
+    'are you made out of Nuggets?',
+    'I really want to taste you fried.'
+]
 
 
 
@@ -94,46 +107,46 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('!praise'):
+    elif message.content.startswith('!praise'):
         await message.channel.send(random.choice(l_praise))
-    if message.content.startswith('!Praise'):
+    elif message.content.startswith('!Praise'):
         await message.channel.send(random.choice(l_unpraise))
-    if message.content.startswith('!pun'):
+    elif message.content.startswith('!pun'):
         await message.channel.send(random.choice(l_puns))
-    if message.content.startswith('shut up moon'):
+    elif message.content.startswith('shut up moon'):
         await message.channel.send(random.choice(l_shutupmoon))   
-    if message.content.startswith('!hello'):
+    elif message.content.startswith('!hello'):
         await message.channel.send(random.choice(l_greetingsWithoutName))
 
-    if message.content.startswith('$stahan'):
+    elif message.content.startswith('$stahan'):
         await message.channel.send('Hello Stahan!')
 
-    if message.content.startswith('lol'):
+    elif message.content.startswith('lol'):
         await message.channel.send('omg ur so funny 01101000 01100001 01101000 01100001 01101000 01100001')
 
-    if message.content.startswith('$day'):
+    elif message.content.startswith('$day'):
         await message.channel.send("Alright, I'll repeat it for you: " + calculate_Days())
 
-    if message.content.startswith('thank') and 'moon' in message.content:
+    elif message.content.startswith('thank') and 'moon' in message.content:
         await message.channel.send('You\'re welcome :3')
 
-    if message.content.startswith('python sucks'):
+    elif message.content.startswith('python sucks'):
         await message.channel.send('YES PYTHON SUCKS!')
 
-    if message.content.startswith('why are you'):
+    elif message.content.startswith('why are you'):
         response = random.choice(l_possible_answers_why)
         await message.channel.send(response)
 
-    if message.content.startswith('!restart'):
+    elif message.content.startswith('!restart'):
         await message.channel.send('Restarted.')
         await bot.logout()
         await bot.close()
         await bot.login(token, bot=True)
 
-    if check_for_words(l_iLoveMoon, message.content):
+    elif check_for_words(l_iLoveMoon, message.content):
         response = random.choice(l_possible_answers_love)
         await message.channel.send(response)
-    if message.content.startswith('!greet'):
+    elif message.content.startswith('!greet'):
         msg = (message.content +'.')[:-1]
         await message.delete()
         response = "Hello there."
@@ -145,8 +158,13 @@ async def on_message(message):
                 response = random.choice((mentionedUser + " " + random.choice(l_greet_Helox), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
             if(mentionedUser == user_sarah):
                 response = random.choice((mentionedUser + " " + random.choice(l_greet_stahan), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
+            if(mentionedUser == user_chicken):
+                response = mentionedUser + " " + random.choice(l_greet_Chicken)
             else: response = random.choice(l_greetingsWithName).replace('NAME',mentionedUser)
         await message.channel.send(response)
+
+    elif check_for_words(l_randomQuestion, message.content):
+        await message.channel.send(random.choice(l_randomAnswers))
 #    if message.content.startswith('!greet'):
 #        response = "Couldn't find the person to greet"
 #        if contains(["sarah", "Sarah", "Stahan", "stahan", "Thilka", "thilka"], message.content) is True:
