@@ -19,9 +19,13 @@ user_helox = '<@!265881314773827584>'
 user_alwin = '<@!381769629380509697>'
 user_ludwig = '<@!385146418375032844>'
 user_chicken = '<@!699592578361983026>'
+
 ##LISTS OF WORDS TO CHECK FOR IN A MESSAGE
 l_iLoveMoon = ["i", "love", "moon"]
 l_randomQuestion = ["moon"]
+l_lol = ["lol"]
+
+
 ##LIST OF POSSIBLE ANSWERS
 dirname, filename = os.path.split(os.path.abspath(__file__))
 file = open(dirname + '/OutputFiles/Praise.txt',"r",encoding='utf-8')
@@ -121,7 +125,7 @@ async def on_message(message):
     elif message.content.startswith('$stahan'):
         await message.channel.send('Hello Stahan!')
 
-    elif message.content.startswith('lol'):
+    elif check_for_words(l_lol, message.content):
         await message.channel.send('omg ur so funny 01101000 01100001 01101000 01100001 01101000 01100001')
 
     elif message.content.startswith('$day'):
@@ -130,7 +134,7 @@ async def on_message(message):
     elif message.content.startswith('thank') and 'moon' in message.content:
         await message.channel.send('You\'re welcome :3')
 
-    elif message.content.startswith('python sucks'):
+    elif check_for_words(('python','sucks'),message.content):
         await message.channel.send('YES PYTHON SUCKS!')
 
     elif message.content.startswith('why are you'):
