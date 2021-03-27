@@ -7,8 +7,8 @@ from discord.ext import tasks, commands
 from discord.ext.commands import Bot
 
 dirname, filename = os.path.split(os.path.abspath(__file__))
-token = open(dirname+"\\Token.txt", "r").read()
-output = open(dirname+"\\output.txt", "w")
+token = open(dirname+"/Token.txt", "r").read()
+output = open(dirname+"/output.txt", "w")
 output.write("Python code start")
 client = discord.Client()
 
