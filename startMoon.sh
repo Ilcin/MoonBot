@@ -11,5 +11,3 @@ else
 echo "$NAME NOT running! Restarting..."
 python3 /home/pi/moonbot/MoonBot.py &
 fi
-
-exit 0
