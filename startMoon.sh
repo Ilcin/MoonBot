@@ -1,10 +1,7 @@
-#!/bin/sh
+#!/bin/bash
 # Name of program in ps-list
 NAME="MoonBot.py"
-# check if running
-if ( ps -a | grep "$NAME" ) then 
-    echo "$NAME is running..." 
-else 
-    echo "$NAME NOT running! Restarting..." 
-    nohup python -u /home/pi/moonbot/startup.py & 
+if ( ps -x | grep "MoonBot.py" )
+    then echo "Moonbot is running..."
+    else nohup python -u /home/pi/moonbot/startup.py &
 fi
