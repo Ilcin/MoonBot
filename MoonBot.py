@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -- coding: UTF-8 --
-print("Content-Type: text/plain;charset=utf-8")
-print("")
+#print("Content-Type: text/plain;charset=utf-8")
+#print("")
 import discord, datetime, asyncio, random, os, sys
 from discord.ext import tasks, commands
 from discord.ext.commands import Bot
@@ -102,8 +102,8 @@ l_greet_Chicken = [
 
 @client.event
 async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-    print(token)
+    #('We have logged in as {0.user}'.format(client))
+    #print(token)
     send_CountDownMessage.start()
 
 @client.event
@@ -198,21 +198,20 @@ def check_for_words(list_of_words, message_content):
     for word in l_message_content:
         word = str(word).lower()
         message += (" " + word)
-    print('message is: ' + message)
+    #print('message is: ' + message)
     all_words_in_message = False
     for word in list_of_words:
         word = str(word).lower()
         if message.find(word) == -1:
-            print(
-                'not all words are contained, content was: ' + message + " word was: " + word)  # word is not contained
+            #print('not all words are contained, content was: ' + message + " word was: " + word)  # word is not contained
         else:
             number_of_matching_words += 1
-            print(number_of_matching_words and "word added was: " and word)
+            #print(number_of_matching_words and "word added was: " and word)
 
     if number_of_matching_words == number_of_words:
         all_words_in_message = True
-    print("number of matching words: " + str(number_of_matching_words))
-    print(all_words_in_message)
+    #print("number of matching words: " + str(number_of_matching_words))
+    #print(all_words_in_message)
     return all_words_in_message
 
 
