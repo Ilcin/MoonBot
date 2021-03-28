@@ -98,8 +98,6 @@ l_greet_Chicken = [
     'I really want to taste you fried.'
 ]
 
-
-
 @client.event
 async def on_ready():
     #('We have logged in as {0.user}'.format(client))
@@ -203,6 +201,7 @@ def check_for_words(list_of_words, message_content):
     for word in list_of_words:
         word = str(word).lower()
         if message.find(word) == -1:
+            return
             #print('not all words are contained, content was: ' + message + " word was: " + word)  # word is not contained
         else:
             number_of_matching_words += 1
