@@ -9,7 +9,7 @@ then
 echo "$NAME is running..."
 else
 echo "$NAME NOT running! Restarting..."
-python3 ./MoonBot.py
+python3 /home/pi/moonbot/MoonBot.py &
 fi
 
 exit 0
