@@ -157,12 +157,13 @@ async def on_message(message):
         if contains("@", msg):
             mentionedUser = msg.rsplit(' ',1)[1]
             if(mentionedUser == user_yumashi):
-                response = random.choice((mentionedUser + " " + random.choice(l_greet_Me), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
-            if(mentionedUser == user_helox):
+                #response = random.choice((mentionedUser + " " + random.choice(l_greet_Me), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
+                response = mentionedUser + " " + random.choice(l_greet_Me)
+            elif(mentionedUser == user_helox):
                 response = random.choice((mentionedUser + " " + random.choice(l_greet_Helox), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
-            if(mentionedUser == user_sarah):
+            elif(mentionedUser == user_sarah):
                 response = random.choice((mentionedUser + " " + random.choice(l_greet_stahan), random.choice(l_greetingsWithName).replace('NAME',mentionedUser)))
-            if(mentionedUser == user_chicken):
+            elif(mentionedUser == user_chicken):
                 response = mentionedUser + " " + random.choice(l_greet_Chicken)
             else: response = random.choice(l_greetingsWithName).replace('NAME',mentionedUser)
         await message.channel.send(response)
