@@ -22,9 +22,7 @@ class ThreadingExample(object):
 
     def run(self):
         """ Method that runs forever """
-        while True:
-            # Do something
-            os.system("python3 /home/pi/moonbot/MoonBot.py")
+        os.system("python3 /home/pi/moonbot/MoonBot.py")
 
 example = ThreadingExample()
 time.sleep(3)
