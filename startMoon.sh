@@ -9,5 +9,5 @@ then
 echo "$NAME is running..."
 else
 echo "$NAME NOT running! Restarting..."
-python3 /home/pi/moonbot/MoonBot.py &
+nohup python3 /home/pi/moonbot/MoonBot.py &
 fi
