@@ -2,6 +2,6 @@
 
 pkill -f MoonBot.py
 
-yes ""| nohup python3 ./MoonBot.py &amp;
+yes "" | nohup python3 ./MoonBot.py &amp;
 
 exit 0
