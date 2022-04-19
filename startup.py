@@ -22,7 +22,7 @@ class ThreadingExample(object):
 
     def run(self):
         """ Method that runs forever """
-        os.system("python3 /home/pi/moonbot/MoonBot.py")
+        os.system("python3 MoonBot.py")
 
 example = ThreadingExample()
 time.sleep(3)
