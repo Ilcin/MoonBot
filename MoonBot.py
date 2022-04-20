@@ -2,12 +2,12 @@
 # -- coding: UTF-8 --
 #print("Content-Type: text/plain;charset=utf-8")
 #print("")
-import discord, datetime, asyncio, random, os, sys
-from discord.ext import tasks, commands
+import discord, datetime, random, os
+from discord.ext import tasks
 from discord.ext.commands import Bot
 
 dirname, filename = os.path.split(os.path.abspath(__file__))
-token = os.environ["token"]
+token = os.environ["moontoken"]
 output = open(dirname+"/output.txt", "w")
 output.write("Python code start")
 client = discord.Client()

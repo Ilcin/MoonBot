@@ -7,6 +7,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
+# Set Token for development
+# ENV moontoken=INPUTTOKENHERE
+
 # Install pip requirements
 COPY requirements.txt .
 RUN python -m pip install -r requirements.txt
