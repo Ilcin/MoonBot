@@ -19,13 +19,15 @@ class ThreadingExample(object):
         thread = threading.Thread(target=self.run, args=())
         thread.daemon = True                            # Daemonize thread
         thread.start()                                  # Start the execution
+        thread.join()
 
     def run(self):
         """ Method that runs forever """
         os.system("python3 MoonBot.py")
 
-example = ThreadingExample()
-time.sleep(3)
-print('Checkpoint')
-time.sleep(2)
+while 0 == 0:
+    example = ThreadingExample()
+    time.sleep(30)
+    print('Bot died :(')
+time.sleep(30)
 print('Bye')
