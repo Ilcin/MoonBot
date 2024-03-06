@@ -224,7 +224,7 @@ async def send_CountDownMessage():
 
 def calculate_Days():
     day_of_year = datetime.datetime.now().timetuple().tm_yday
-    days_in_year = 365 + calendar.isleap(days_in_year(year=datetime.datetime.now().year))
+    days_in_year = 365 + calendar.isleap(datetime.datetime.now().year)
     remaining_days = days_in_year - day_of_year
     remaining_days_str = str(remaining_days)
     day_of_year_str = str(day_of_year)
