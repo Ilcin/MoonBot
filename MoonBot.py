@@ -223,10 +223,10 @@ async def send_CountDownMessage():
 
 def calculate_Days():
     day_of_year = datetime.datetime.now().timetuple().tm_yday
-    remaining_days = 365 - day_of_year
+    remaining_days = 366 - day_of_year
     remaining_days_str = str(remaining_days)
     day_of_year_str = str(day_of_year)
-    dailymessage = str("Day " + day_of_year_str + " of 365, " + remaining_days_str + " days remain")
+    dailymessage = str("Day " + day_of_year_str + " of 366, " + remaining_days_str + " days remain")
     return dailymessage
 
 output.write("Python code end")
