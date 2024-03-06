@@ -228,7 +228,8 @@ def calculate_Days():
     remaining_days = days_in_year - day_of_year
     remaining_days_str = str(remaining_days)
     day_of_year_str = str(day_of_year)
-    dailymessage = str("Day " + day_of_year_str + " of " + days_in_year + ", " + remaining_days_str + " days remain")
+    days_in_year_str = str(days_in_year)
+    dailymessage = str("Day " + day_of_year_str + " of " + days_in_year_str + ", " + remaining_days_str + " days remain")
     return dailymessage
 
 output.write("Python code end")
