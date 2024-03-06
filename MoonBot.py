@@ -2,7 +2,7 @@
 # -- coding: UTF-8 --
 #print("Content-Type: text/plain;charset=utf-8")
 #print("")
-import discord, datetime, random, os
+import discord, datetime, random, os, calendar
 from discord.ext import tasks
 from discord.ext.commands import Bot
 
@@ -223,10 +223,11 @@ async def send_CountDownMessage():
 
 def calculate_Days():
     day_of_year = datetime.datetime.now().timetuple().tm_yday
-    remaining_days = 366 - day_of_year
+    days_in_year = 365 + calendar.isleap(days_in_year(year=datetime.datetime.now().year))
+    remaining_days = days_in_year - day_of_year
     remaining_days_str = str(remaining_days)
     day_of_year_str = str(day_of_year)
-    dailymessage = str("Day " + day_of_year_str + " of 366, " + remaining_days_str + " days remain")
+    dailymessage = str("Day " + day_of_year_str + " of " + days_in_year + ", " + remaining_days_str + " days remain")
     return dailymessage
 
 output.write("Python code end")
