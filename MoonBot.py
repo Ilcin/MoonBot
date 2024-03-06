@@ -10,7 +10,7 @@ dirname, filename = os.path.split(os.path.abspath(__file__))
 token = os.environ["moontoken"]
 output = open(dirname+"/output.txt", "w")
 output.write("Python code start")
-intent = discord.Intents.default()
+intent = discord.Intents.all()
 client = discord.Client(intents = intent)
 
 bot = Bot(command_prefix='!', intents = intent)
