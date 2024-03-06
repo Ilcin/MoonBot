@@ -10,10 +10,10 @@ dirname, filename = os.path.split(os.path.abspath(__file__))
 token = os.environ["moontoken"]
 output = open(dirname+"/output.txt", "w")
 output.write("Python code start")
-intents = discord.Intents.default()
-client = discord.Client(intents)
+intent = discord.Intents.default()
+client = discord.Client(intents = intent)
 
-bot = Bot(command_prefix='!', intents = intents)
+bot = Bot(command_prefix='!', intents = intent)
 user_yumashi = '<@!288251810794438656>'
 user_sarah = '<@!287945892730765312>'
 user_helox = '<@!265881314773827584>'
