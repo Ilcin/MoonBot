@@ -2,12 +2,13 @@
 # -- coding: UTF-8 --
 #print("Content-Type: text/plain;charset=utf-8")
 #print("")
-import discord, datetime, random, os, calendar
+import discord, datetime, random, os, calendar, threading
 from discord.ext import tasks
 from discord.ext.commands import Bot
+from moonbot_config import MOONBOT_CHARACTER, moontoken, ai_api_url, ai_api_key, valid_models, default_model
 
 dirname, filename = os.path.split(os.path.abspath(__file__))
-token = os.environ["moontoken"]
+token = os.environ.get("MOONTOKEN", moontoken)
 output = open(dirname+"/output.txt", "w")
 output.write("Python code start")
 intent = discord.Intents.all()
@@ -25,6 +26,7 @@ user_chicken = '<@!699592578361983026>'
 l_iLoveMoon = ["i", "love", "moon"]
 l_randomQuestion = ["moon"]
 l_lol = ["lol"]
+l_think = ["think"]
 
 
 ##LIST OF POSSIBLE ANSWERS
@@ -105,6 +107,37 @@ async def on_ready():
     #print(token)
     send_CountDownMessage.start()
 
+
+async def call_ai_api(prompt: str, model: str = default_model) -> str:
+    """Call the AI API directly and return the response"""
+    headers = {
+        "Content-Type": "application/json",
+    }
+    if ai_api_key:
+        headers["Authorization"] = f"Bearer {ai_api_key}"
+    
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": MOONBOT_CHARACTER},
+            {"role": "user", "content": prompt}
+        ],
+        "temperature": 0.7
+    }
+    
+    try:
+        import aiohttp
+        async with aiohttp.ClientSession() as session:
+            async with session.post(ai_api_url, json=payload, headers=headers) as response:
+                if response.status == 200:
+                    data = await response.json()
+                    return data.get("choices", [{}])[0].get("message", {}).get("content", "Thinking...")
+                else:
+                    return f"AI API error: {response.status}"
+    except Exception as e:
+        return f"Error calling AI: {str(e)}"
+
+
 @client.event
 async def on_message(message):
     if message.author == client.user:
@@ -169,16 +202,13 @@ async def on_message(message):
 
     elif check_for_words(l_randomQuestion, message.content):
         await message.channel.send(random.choice(l_randomAnswers))
-#    if message.content.startswith('!greet'):
-#        response = "Couldn't find the person to greet"
-#        if contains(["sarah", "Sarah", "Stahan", "stahan", "Thilka", "thilka"], message.content) is True:
-#                response = user_sarah + " " +  random.choice(l_greet_stahan)
-#        elif contains(["Ilcin", "ilcin", "moonqueen", "Moonqueen", "dumbass", "yumashi", "Yumashi"], message.content) is True:
-#                response = user_yumashi + " " + random.choice(l_greet_Me)
-#        elif contains(["Helox", "Hendrik", "helox", "hendrik", "midnight Rebel", "Midnight Rebel", "midnight rebel", "Midnight rebel"], message.content):
-#            response = user_helox + " " + random.choice(l_greet_Helox)
-#        await message.channel.send(response)
-
+    
+    elif check_for_words(l_think, message.content):
+        # Call AI directly when "think" is mentioned
+        prompt = message.content
+        await message.channel.send("I'm thinking about that...")
+        response = await call_ai_api(prompt, default_model)
+        await message.channel.send(response)
 
 
 def contains(list_of_words, message_content):
@@ -231,6 +261,7 @@ def calculate_Days():
     days_in_year_str = str(days_in_year)
     dailymessage = str("Day " + day_of_year_str + " of " + days_in_year_str + ", " + remaining_days_str + " days remain")
     return dailymessage
+
 
 output.write("Python code end")
 client.run(token)
