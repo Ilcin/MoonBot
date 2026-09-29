@@ -153,6 +153,39 @@ async def call_ai_api(prompt: str, model: str = default_model) -> str:
         return f"Error calling AI: {str(e)}"
 
 
+async def handle_ai_response(message, remove_mention=False):
+    """Handle AI response with message history context"""
+    channel_id = message.channel.id
+    context_messages = message_history.get(channel_id, [])
+    
+    # Build context from previous messages
+    context_text = ""
+    for msg in context_messages:
+        context_text += f"{msg['author']}: {msg['content']}\n"
+    
+    # Add current message (optionally remove the mention)
+    content = message.content
+    if remove_mention:
+        content = content.replace(f'<@!{client.user.id}>', '').replace(f'<@{client.user.id}>', '').strip()
+    
+    current_prompt = f"Previous conversation:\n{context_text}\n\nCurrent: {content}"
+    
+    await message.channel.send("I'm thinking about that...")
+    response = await call_ai_api(current_prompt, default_model)
+    await message.channel.send(response)
+    
+    # Update message history
+    if channel_id not in message_history:
+        message_history[channel_id] = []
+    message_history[channel_id].append({
+        'author': message.author.name,
+        'content': message.content
+    })
+    # Keep only last 5 messages
+    if len(message_history[channel_id]) > 5:
+        message_history[channel_id] = message_history[channel_id][-5:]
+
+
 @client.event
 async def on_message(message):
     if message.author == client.user:
@@ -200,7 +233,7 @@ async def on_message(message):
         await message.channel.send('Restarted.')
         await bot.logout()
         await bot.close()
-        await bot.login(token, bot=True)
+        await bot.login(moontoken, bot=True)
 
     elif check_for_words(l_iLoveMoon, message.content):
         response = random.choice(l_possible_answers_love)
@@ -227,33 +260,15 @@ async def on_message(message):
         await message.channel.send(random.choice(l_randomAnswers))
     
     elif check_for_words(l_think, message.content):
-        # Call AI directly when "think" is mentioned
-        # Get conversation context from last 5 messages
-        channel_id = message.channel.id
-        context_messages = message_history.get(channel_id, [])
-        
-        # Build context from previous messages
-        context_text = ""
-        for msg in context_messages:
-            context_text += f"{msg['author']}: {msg['content']}\n"
-        
-        # Add current message
-        current_prompt = f"Previous conversation:\n{context_text}\n\nCurrent: {message.content}"
-        
-        await message.channel.send("I'm thinking about that...")
-        response = await call_ai_api(current_prompt, default_model)
-        await message.channel.send(response)
-        
-        # Update message history
-        if channel_id not in message_history:
-            message_history[channel_id] = []
-        message_history[channel_id].append({
-            'author': message.author.name,
-            'content': message.content
-        })
-        # Keep only last 5 messages
-        if len(message_history[channel_id]) > 5:
-            message_history[channel_id] = message_history[channel_id][-5:]
+        await handle_ai_response(message)
+    
+    # Always respond when MoonBot is tagged
+    elif client.user.mentioned_in(message):
+        await handle_ai_response(message, remove_mention=True)
+    
+    # 10% chance to respond to any other message
+    elif random.random() < 0.1:
+        await handle_ai_response(message)
 
 
 def contains(list_of_words, message_content):
