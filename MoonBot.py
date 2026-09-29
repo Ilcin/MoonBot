@@ -15,6 +15,10 @@ intent = discord.Intents.all()
 client = discord.Client(intents = intent)
 
 bot = Bot(command_prefix='!', intents = intent)
+
+# Message history for AI context (store last 5 messages per channel)
+message_history = {}
+
 user_yumashi = '<@!288251810794438656>'
 user_sarah = '<@!287945892730765312>'
 user_helox = '<@!265881314773827584>'
@@ -110,16 +114,21 @@ async def on_ready():
 
 async def call_ai_api(prompt: str, model: str = default_model) -> str:
     """Call the AI API directly and return the response"""
+    print(f"[AI] Calling API with URL: {ai_api_url}")
+    print(f"[AI] Using model: {model}")
+    print(f"[AI] API Key configured: {'Yes' if ai_api_key else 'No'}")
+    
     headers = {
         "Content-Type": "application/json",
     }
     if ai_api_key:
         headers["Authorization"] = f"Bearer {ai_api_key}"
+        print(f"[AI] Authorization header set")
     
     payload = {
         "model": model,
         "messages": [
-            {"role": "system", "content": MOONBOT_CHARACTER},
+            {"role": "system", "content": MOONBOT_CHARACTER[:100] + "..."},
             {"role": "user", "content": prompt}
         ],
         "temperature": 0.7
@@ -129,12 +138,19 @@ async def call_ai_api(prompt: str, model: str = default_model) -> str:
         import aiohttp
         async with aiohttp.ClientSession() as session:
             async with session.post(ai_api_url, json=payload, headers=headers) as response:
+                print(f"[AI] Response status: {response.status}")
+                print(f"[AI] Response headers: {response.headers}")
+                
                 if response.status == 200:
                     data = await response.json()
+                    print(f"[AI] Success! Response: {data}")
                     return data.get("choices", [{}])[0].get("message", {}).get("content", "Thinking...")
                 else:
-                    return f"AI API error: {response.status}"
+                    error_text = await response.text()
+                    print(f"[AI] Error response: {error_text}")
+                    return f"AI API error: {response.status} - {error_text}"
     except Exception as e:
+        print(f"[AI] Exception occurred: {str(e)}")
         return f"Error calling AI: {str(e)}"
 
 
@@ -153,6 +169,14 @@ async def on_message(message):
         await message.channel.send(random.choice(l_shutupmoon))   
     elif message.content.startswith('!hello'):
         await message.channel.send(random.choice(l_greetingsWithoutName))
+
+    elif message.content.startswith('!clearhistory'):
+        channel_id = message.channel.id
+        if channel_id in message_history:
+            del message_history[channel_id]
+            await message.channel.send("Conversation history cleared for this channel.")
+        else:
+            await message.channel.send("No conversation history to clear.")
 
     elif message.content.startswith('$stahan'):
         await message.channel.send('Hello Stahan!')
@@ -205,10 +229,32 @@ async def on_message(message):
     
     elif check_for_words(l_think, message.content):
         # Call AI directly when "think" is mentioned
-        prompt = message.content
+        # Get conversation context from last 5 messages
+        channel_id = message.channel.id
+        context_messages = message_history.get(channel_id, [])
+        
+        # Build context from previous messages
+        context_text = ""
+        for msg in context_messages:
+            context_text += f"{msg['author']}: {msg['content']}\n"
+        
+        # Add current message
+        current_prompt = f"Previous conversation:\n{context_text}\n\nCurrent: {message.content}"
+        
         await message.channel.send("I'm thinking about that...")
-        response = await call_ai_api(prompt, default_model)
+        response = await call_ai_api(current_prompt, default_model)
         await message.channel.send(response)
+        
+        # Update message history
+        if channel_id not in message_history:
+            message_history[channel_id] = []
+        message_history[channel_id].append({
+            'author': message.author.name,
+            'content': message.content
+        })
+        # Keep only last 5 messages
+        if len(message_history[channel_id]) > 5:
+            message_history[channel_id] = message_history[channel_id][-5:]
 
 
 def contains(list_of_words, message_content):
