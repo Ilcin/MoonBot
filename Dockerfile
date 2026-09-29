@@ -7,8 +7,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED=1
 
-# Set Token for development
+# Set environment variables for development (override with -e flag when running)
 # ENV moontoken=INPUTTOKENHERE
+# ENV AI_API_URL=https://api.openai.com/v1/chat/completions
+# ENV AI_API_KEY=your-api-key-here
 
 # Install pip requirements
 COPY requirements.txt .

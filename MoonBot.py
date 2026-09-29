@@ -8,7 +8,6 @@ from discord.ext.commands import Bot
 from moonbot_config import MOONBOT_CHARACTER, moontoken, ai_api_url, ai_api_key, valid_models, default_model
 
 dirname, filename = os.path.split(os.path.abspath(__file__))
-token = os.environ.get("MOONTOKEN", moontoken)
 output = open(dirname+"/output.txt", "w")
 output.write("Python code start")
 intent = discord.Intents.all()
@@ -310,7 +309,7 @@ def calculate_Days():
 
 
 output.write("Python code end")
-client.run(token)
-bot.run(token)
+client.run(moontoken)
+bot.run(moontoken)
 
 #client.close()
