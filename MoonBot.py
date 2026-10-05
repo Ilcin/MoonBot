@@ -153,7 +153,7 @@ async def call_ai_api(prompt: str, model: str = default_model) -> str:
         return f"Error calling AI: {str(e)}"
 
 
-async def handle_ai_response(message, remove_mention=False):
+async def handle_ai_response(message, remove_mention=False, skip_thinking=False):
     """Handle AI response with message history context"""
     channel_id = message.channel.id
     context_messages = message_history.get(channel_id, [])
@@ -170,7 +170,8 @@ async def handle_ai_response(message, remove_mention=False):
     
     current_prompt = f"Previous conversation:\n{context_text}\n\nCurrent: {content}"
     
-    await message.channel.send("I'm thinking about that...")
+    if not skip_thinking:
+        await message.channel.send("I'm thinking about that...")
     response = await call_ai_api(current_prompt, default_model)
     await message.channel.send(response)
     
@@ -181,14 +182,18 @@ async def handle_ai_response(message, remove_mention=False):
         'author': message.author.name,
         'content': message.content
     })
-    # Keep only last 5 messages
-    if len(message_history[channel_id]) > 5:
-        message_history[channel_id] = message_history[channel_id][-5:]
+    # Keep only last 10 messages
+    if len(message_history[channel_id]) > 10:
+        message_history[channel_id] = message_history[channel_id][-10:]
 
 
 @client.event
 async def on_message(message):
     if message.author == client.user:
+        return
+    
+    # Prevent responding to own "thinking" message
+    if message.content == "I'm thinking about that...":
         return
 
     elif message.content.startswith('!praise'):
@@ -256,19 +261,19 @@ async def on_message(message):
             else: response = random.choice(l_greetingsWithName).replace('NAME',mentionedUser)
         await message.channel.send(response)
 
-    elif check_for_words(l_randomQuestion, message.content):
-        await message.channel.send(random.choice(l_randomAnswers))
-    
     elif check_for_words(l_think, message.content):
         await handle_ai_response(message)
+    
+    elif check_for_words(l_randomQuestion, message.content):
+        await message.channel.send(random.choice(l_randomAnswers))
     
     # Always respond when MoonBot is tagged
     elif client.user.mentioned_in(message):
         await handle_ai_response(message, remove_mention=True)
     
-    # 10% chance to respond to any other message
+    # 10% chance to respond to any other message (without "thinking" message)
     elif random.random() < 0.1:
-        await handle_ai_response(message)
+        await handle_ai_response(message, skip_thinking=True)
 
 
 def contains(list_of_words, message_content):
