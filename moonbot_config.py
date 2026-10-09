@@ -33,5 +33,5 @@ import os
 moontoken = os.environ.get("MOONTOKEN", "default-token-change-in-production")
 ai_api_url = os.environ.get("AI_API_URL", "https://api.openai.com/v1/chat/completions")
 ai_api_key = os.environ.get("AI_API_KEY", "")
-valid_models = ["gpt-4", "gpt-3.5-turbo", "claude-3", "llama-3", "nemo-3-omni"]
-default_model = "nemo-3-omni"
+valid_models = ["gpt-4", "gpt-3.5-turbo", "claude-3", "llama-3", "nemo-3-omni", "qwen3.8-27b"]
+default_model = os.environ.get("AI_MODEL", "qwen3.8-27b")

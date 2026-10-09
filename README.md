@@ -34,6 +34,7 @@ Set these environment variables when running the bot:
 - `MOONTOKEN`: Your Discord bot token (required)
 - `AI_API_URL`: Your AI provider URL (default: OpenAI)
 - `AI_API_KEY`: Your AI provider API key (default: empty)
+- `AI_MODEL`: The model to use (default: `qwen3.8-27b`). Must be one of the entries in `valid_models` in `moonbot_config.py`.
 
 ## Running with Docker
 
